@@ -104,3 +104,15 @@ for key_name in baseball_player:
 for key_name, value in baseball_player.items():
     print(key_name, value)
 
+seasons = ("Spring", "Summer", "Fall", "Winter")
+
+for resultA, resultB in baseball_player.items():
+    print(resultA, resultB)
+
+spring, summer, fall, winter = seasons
+
+print(spring)
+
+# list comprehension
+x = [ s * 2 for s in seasons ]
+print(x)

@@ -31,7 +31,6 @@ for i in range(len(names)):
 # for thing in things
 for name in names:
     print(name)
-        
 
 def fizz_buzz():
     for i in range(1, 100):
@@ -48,7 +47,7 @@ def fizz_buzz():
 
     # if number%5 == 0 print "Buzz"
     # if number%3 and number%5 == 0 print "FizzBuzz"
-    
+
 
 
 # FUNCTIONS
@@ -80,7 +79,7 @@ def shift_values_left(values):
 
     for i in range(len(values)-1):
         values[i] = values[i+1]
-    
+
     # we need to but "first" at the end
     lastIdx = len(values)-1
     values[lastIdx] = first

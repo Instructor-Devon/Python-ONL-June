@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Session Times</title>
+</head>
+<body>
+    <h1>You have submitted {{ session["count"] }} times</h1>
+    <h2>First we must submit a form</h2>
+    <form action="/doit" method="POST">
+        <input type="text" name="first_name" placeholder="Enter your first name">
+        <input type="text" name="last_name" placeholder="Enter your last name">
+        <input type="submit" value="Send!">
+    </form>
+    <h2>All Users submitted:</h2>
+    {% for user in session["users"] %}
+        <p>{{ user }}</p>
+    {% endfor %}
+</body>
+</html>

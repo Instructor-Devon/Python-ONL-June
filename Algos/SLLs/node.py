@@ -22,6 +22,10 @@ class SinglyLinkedList:
         # make new node
         newNode = Node(value)
 
+        if self.length == 0:
+            self.add_front(value)
+            return
+
         # get to the back
         runner = self.head
         while runner.next != None:
@@ -111,6 +115,55 @@ class SinglyLinkedList:
             runner.next = None
         return to_return
 
+    @property
+    def length(self):
+        # returns number of nodes in list
+
+        runner = self.head
+        count = 0
+        # move through list, counting each time
+        while runner != None:
+            count += 1
+            runner = runner.next
+
+        
+        return count
+
+    def max(self):
+        # returns largest value in list
+        runner = self.head
+        currMax = runner.value
+        # move through list, comparing to currMax
+        while runner != None:
+            if currMax < runner.value:
+                currMax = runner.value
+            runner = runner.next
+
+        return currMax
+
+    def is_palindrome(self):
+
+        # [2,4,6,4,2] => True
+        # [1,2,3,4] => False
+
+        # convert sll to py list
+        newList = []
+
+        runner = self.head
+        # iterate list, append each node's value to list
+        while runner != None:
+            newList.append(runner.value)
+            runner = runner.next
+
+        # then compare (last - i) to (first + i)
+        for i in range(int(len(newList) / 2)):
+            if newList[i] != newList[(len(newList) - 1) - i]:
+                return False
+
+        return True
+
+
+
     def __repr__(self):
         output = "["
 
@@ -131,10 +184,10 @@ class SinglyLinkedList:
         
 
 listy = SinglyLinkedList()
-listy.add_front("Sally")
-listy.add_back("Marcia")
-listy.add_back("Donny")
-listy.add_back("Suzie")
+listy.add_back(2)
+listy.add_back(5)
+listy.add_back(5)
+listy.add_back(4)
+listy.add_back(2)
 print(listy)
-
-
+print(listy.is_palindrome())

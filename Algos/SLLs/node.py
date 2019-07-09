@@ -57,22 +57,7 @@ class SinglyLinkedList:
 
         newNode.next = runner.next
         runner.next = newNode
-
-    def size(self):
-
-        runner = self.head
-        count = 0
-
-        if self.head == None:
-            return count
-
-        while runner.next != None:
-            count += 1
-            runner = runner.next
-
-        count += 1
-
-        return count
+   
 
     def remove_front(self):
 
@@ -161,6 +146,67 @@ class SinglyLinkedList:
                 return False
 
         return True
+    
+    def remove_value(self, val):
+        
+        # EDGE CASE (FIRST ONE)
+        if self.head.value == val:
+            to_return = self.head.value
+            self.head = self.head.next
+            return to_return
+            # do stuff
+
+        runner = self.head.next
+        # maintaing a "prev" pointer
+        prev = self.head
+        # loop through list
+        while runner.next != None:
+            if runner.value == val:
+                # save it
+                to_return = runner.value
+                # kill it
+                prev.next = runner.next
+                # return it
+                return to_return
+
+            prev = runner
+            runner = runner.next
+
+        # EDGE CASE (LAST ONE)
+        if runner.value == val:
+            to_return = runner.value
+            prev.next = None
+            return to_return
+
+
+    def remove_negatives(self):
+        
+        # EDGE CASE (FIRST ONE)
+        while self.head.value < 0:
+            self.head = self.head.next
+
+        # remove all negative values (< 0)
+
+        runner = self.head
+        # loop through list 
+        while runner.next != None:
+            
+            # stay one behind
+
+            # EDGE CASE (CONSECTUTIVE NEGATIVES)
+            while runner.next.value < 0:
+                # check if runner.next is None
+                if runner.next.next == None:
+                    runner.next = None
+                    return
+
+                # kill it
+                runner.next = runner.next.next
+
+
+            runner = runner.next
+                
+
 
 
 
@@ -178,16 +224,15 @@ class SinglyLinkedList:
         output += "]"
         return output
         
-
-
-
         
 
 listy = SinglyLinkedList()
-listy.add_back(2)
-listy.add_back(5)
-listy.add_back(5)
-listy.add_back(4)
-listy.add_back(2)
+listy.add_back(10)
+listy.add_back(-10)
+listy.add_back(10)
+listy.add_back(-10)
+
 print(listy)
-print(listy.is_palindrome())
+listy.remove_negatives()
+print(listy)
+

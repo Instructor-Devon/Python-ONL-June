@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>User Action</title>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/dev-styles.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/listy.css') }}">
+        <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Inconsolata">
+        <link href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans&display=swap" rel="stylesheet"> 
+        <link href="https://fonts.googleapis.com/css?family=Fira+Sans&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Work+Sans&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Bree+Serif&display=swap" rel="stylesheet">
+    </head>
+<body>
+    <nav>
+        <h1>Cool Website Dot Com</h1>
+    </nav>
+    <div class="container">
+        {% with messages = get_flashed_messages() %}
+        {% for message in messages %}
+            <p>{{ message }}</p>
+        {% endfor %}
+        {% endwith %}
+        <div class="content">
+            <h2>Register</h2>
+            <form class="lol-form" action="/create" method="post">
+                <div class="fm-group">
+                    <label for="name">Name</label>
+                    <input type="text" id="name" name="name">
+                </div>
+                <div class="fm-group">
+                    <label for="email">Email</label>
+                    <input type="text" id="name" name="email">
+                </div>
+                <div class="fm-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password">
+                </div>
+                <div class="fm-group">
+                    <label for="confirm">Confirm Password</label>
+                    <input type="password" id="confirm" name="confirm">
+                </div>
+                <button class="btn btn-ok">Submit</button>
+            </form>
+        </div>
+        <div class="content">
+            <h2>Login</h2>
+            <form class="lol-form" action="/login" method="post">
+                <div class="fm-group">
+                    <label for="email">Email</label>
+                    <input type="text" id="name" name="email">
+                </div>
+                <div class="fm-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password">
+                </div>
+                <button class="btn btn-ok">Submit</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

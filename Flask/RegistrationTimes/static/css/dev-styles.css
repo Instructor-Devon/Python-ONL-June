@@ -86,6 +86,6 @@ table.table, table.table>thead>tr {
     display:  block;
     margin: 5px 2px;
 }
-.fm-group > input {
+.fm-group > input, .fm-group > textarea {
    width: 80%;
 }

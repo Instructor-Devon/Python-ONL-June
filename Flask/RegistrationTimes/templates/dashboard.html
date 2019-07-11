@@ -1,0 +1,74 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>User Action</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dev-styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/listy.css') }}">
+    <link rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Inconsolata">
+    <link href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans&display=swap" rel="stylesheet"> 
+    <link href="https://fonts.googleapis.com/css?family=Fira+Sans&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Work+Sans&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Bree+Serif&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav>
+        <h1>Sup Users</h1>
+        <a href="/new">Write a blog</a>
+        <a href="/">Back</a>
+    </nav>
+    <div class="container">
+        <div class="content">
+                <h2>Here are some Users:</h2>
+                <div class="scroller">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Date Registered</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for user in users %}
+                            <tr>
+                                <td><a href="/show/{{ user.id }}">{{ user.name }}</a></td>
+                                <td>{{ user.email }}</td>
+                                <td>{{ user.created_at.strftime("%m/%d/%Y") }}</td>
+                            </tr>
+                            {% endfor%}
+                        </tbody>
+                    </table>
+                </div>
+        </div>
+        <div class="content">
+                <h2>Here are some Blogs:</h2>
+                <div class="scroller">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Topic</th>
+                                <th>Content</th>
+                                <th>Author</th>
+                                <th>Date Posted</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for blog in blogs %}
+                            <tr>
+                                <td>{{ blog.topic }}</td>
+                                <td>{{ blog.content }}</td>
+                                <td>{{ blog.name }}</td>
+                                <td>{{ blog.created_at.strftime("%m/%d/%Y") }}</td>
+                            </tr>
+                            {% endfor%}
+                        </tbody>
+                    </table>
+                </div>
+        </div>
+    
+    </div>
+</body>
+</html>

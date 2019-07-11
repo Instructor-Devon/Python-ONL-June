@@ -19,27 +19,18 @@
     </nav>
     <div class="container">
         <div class="content">
-            <h2>Here are some Users:</h2>
-            <div class="scroller">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Email</th>
-                            <th>Date Registered</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for user in users %}
-                        <tr>
-                            <td><a href="/show/{{ user.id }}">{{ user.name }}</a></td>
-                            <td>{{ user.email }}</td>
-                            <td>{{ user.created_at.strftime("%m/%d/%Y") }}</td>
-                        </tr>
-                        {% endfor%}
-                    </tbody>
-                </table>
-            </div>
+            <h2>Post a Blog</h2>
+            <form action="/blog" method="post">
+                <div class="fm-group">
+                    <label for="topic">topic</label>
+                    <input type="text" id="topic" name="topic">
+                </div>
+                <div class="fm-group">
+                    <label for="blog">Blog</label>
+                    <textarea id="blog" name="blog"></textarea>
+                </div>
+                <button class="btn btn-ok">Post</button>
+            </form>
         </div>
         
     </div>

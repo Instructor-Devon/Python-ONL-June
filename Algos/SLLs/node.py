@@ -34,6 +34,50 @@ class SinglyLinkedList:
         runner.next = newNode
         # add new node to back.next
 
+
+    def concat(self, sll2):
+
+        # self: [1,2,3], ssl2: [5,6,7]  => [1,2,3,5,6,7]
+
+        # todo: travel to end of self list
+        
+        runner = self.head
+        while runner.next != None:
+            runner = runner.next
+
+        # attach last node to head of ssl2
+        runner.next = sll2.head
+
+
+    def zip(self, misty):
+
+        # self: [1,2,3], sll2 [4,5,6] => [1,4,2,5,3,6]
+
+        runner = self.head
+        t1 = runner.next
+
+        runner.next = misty.head
+
+        runner = runner.next
+        t2 = runner.next
+
+        while runner.next != None:
+            
+            runner.next = t1
+            runner = runner.next
+            t1 = runner.next
+                
+            runner.next = t2
+            runner = runner.next
+            t2 = runner.next
+            
+            if t1 != None:
+                break
+
+
+
+        
+
     def insert(self, value, position):
 
         if position < 2:
@@ -227,12 +271,18 @@ class SinglyLinkedList:
         
 
 listy = SinglyLinkedList()
-listy.add_back(10)
-listy.add_back(-10)
-listy.add_back(10)
-listy.add_back(-10)
+listy.add_back(1)
+listy.add_back(2)
+listy.add_back(3)
+
+
+misty = SinglyLinkedList()
+misty.add_back(4)
+misty.add_back(5)
+misty.add_back(6)
+misty.add_back(8)
+
+
+listy.zip(misty)
 
 print(listy)
-listy.remove_negatives()
-print(listy)
-

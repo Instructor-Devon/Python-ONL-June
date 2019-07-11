@@ -19,28 +19,21 @@
     </nav>
     <div class="container">
         <div class="content">
-            <h2>Update {{ user.name }}</h2>
-            <form action="/update/{{ user.id }}" method="post">
-                <div class="fm-group">
-                    <label for="name">Name</label>
-                    <input type="text" id="name" value="{{ user.name }}" name="name">
-                </div>
-                <div class="fm-group">
-                    <label for="location">Location</label>
-                    <input type="text" id="location" name="location" value="{{ user.location }}">
-                </div>
-                <button class="btn btn-ok">Update</button>
-            </form>
-            <hr>
-            <a class="btn btn-danger" href="/delete/{{ user.id }}">Delete</a>
-        </div>
-        <div class="content">
             <h2>Stats:</h2>
             <p><span>ID</span>{{ user.id }}</p>
             <p><span>Name</span>{{ user.name }}</p>
-            <p><span>Location</span>{{ user.location }}</p>
+            <p><span>Email</span>{{ user.email }}</p>
             <p><span>Date Added</span>{{ user.created_at }}</p>
             <p><span>Last Updated</span>{% if user.updated_at %}{{ user.updated_at }}{% else %}N/A{% endif %}</p>
+        </div>
+        <div class="content">
+            <h2>Blogs</h2>
+            {% for blog in blogs%}
+                <div class="blog">
+                    <h3>{{ blog.topic }}</h3>
+                    <p>{{ blog.content }}</p>
+                </div>
+            {% endfor %}
         </div>
     </div>
 </body>

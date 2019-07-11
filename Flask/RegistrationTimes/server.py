@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, flash
+from flask import Flask, render_template, request, redirect, flash, session
 from mysqlconnection import connectToMySQL
 import re
 from flask_bcrypt import Bcrypt
@@ -18,8 +18,11 @@ def home():
     mysql = connectToMySQL("mydb")
     result = mysql.query_db("SELECT * FROM users")
     # [{"column": row_value}]
+
+    blogs = connectToMySQL("mydb").query_db("SELECT blogs.id, topic, content, name, blogs.created_at FROM blogs JOIN users ON blogs.user_id = users.id")
+
+    return render_template("dashboard.html", users=result, blogs=blogs)
     
-    return render_template("home.html", users=result)
 
 @app.route("/show/<user_id>")
 def show(user_id):
@@ -31,7 +34,10 @@ def show(user_id):
     mysql = connectToMySQL("mydb")
     result = mysql.query_db(query, data)
 
-    return render_template("show.html", user=result[0])
+    blogs = connectToMySQL("mydb").query_db("SELECT * FROM blogs WHERE user_id = %(USER_ID)s", data)
+
+
+    return render_template("show.html", user=result[0], blogs=blogs)
 
 @app.route("/create", methods=["POST"])
 def create():
@@ -68,6 +74,7 @@ def create():
     if errors:
         for error in errors:
             flash(error)
+        return render_template("index.html", name=request.form["name"], email=request.form["email"])
     else:
         hashed_pw = bcrypt.generate_password_hash(request.form["password"])
         query = "INSERT INTO users (name, email, password) VALUES (%(nm)s, %(em)s, %(pw)s);"
@@ -107,6 +114,8 @@ def login():
 
 
     # if user passes both checks: we will "log" them in
+
+    session["user_id"] = user["id"]
     # TODO: for Wednesday
 
     return redirect("/home")
@@ -136,5 +145,27 @@ def delete(user_id):
 
     return redirect("/")
 
+# BLOG STUFF
+
+@app.route("/new")
+def new_blog():
+    return render_template("newblog.html")
+
+@app.route("/blog", methods=["POST"])
+def blog():
+
+    # TODO: (LATER) VALIDATIONS HERE
+
+    query = "INSERT INTO blogs (topic, content, user_id) VALUES (%(top)s, %(con)s, %(uid)s)"
+    data = {
+        "top": request.form["topic"],
+        "con": request.form["blog"],
+        "uid": session["user_id"]
+    }
+    connectToMySQL("mydb").query_db(query, data)
+
+    return redirect("/home")
+
 if __name__ == "__main__":
     app.run(debug=True)
+

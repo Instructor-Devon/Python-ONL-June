@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'home/dev-styles.css'%}">
+    <title>Ninja Gold</title>
+</head>
+<body>
+    <nav>
+        <h1>Welcome to Ninja Gold</h1>
+        {% if newPlayer %}
+        <form action="/playername" method="post">
+            {% csrf_token %}
+            <input type="text" name="player" placeholder="Enter your name">
+            <button class="btn btn-ok">Submit</button>
+        </form>
+        {% else %}
+            <h4>{{ request.session.player }}</h4>
+        {% endif %}
+    </nav>
+    <h2>Current Gold: <input type="text" disabled value="{{ request.session.gold }}"></h2>
+    <div class="container">
+        <div class="content">
+            <h2>Temple</h2>
+            <h4>Get 10 - 20 Golds</h4>
+            <form action="/getgold" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="building" value="temple">
+                <button class="btn btn-ok">Get Gold</button>
+            </form>
+        </div>
+        <div class="content">
+            <h2>Castle</h2>
+            <h4>Get 5 - 10 Golds</h4>
+            <form action="/getgold" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="building" value="castle">
+                <button class="btn btn-ok">Get Gold</button>
+            </form>
+        </div>
+        <div class="content">
+            <h2>Shogun</h2>
+            <h4>Get 20 - 30 Golds (with 10% chance of getting excecuted)</h4>
+            <form action="/getgold" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="building" value="shogun">
+                <button class="btn btn-ok">Get Gold</button>
+            </form>
+        </div>
+    </div>
+    <div class="scroller">
+        {% for activity in request.session.activities reversed %}
+        <p>{{ activity }}</p>
+        {% endfor %}
+    </div>
+    <hr>
+</body>
+</html>

@@ -23,33 +23,18 @@
     </nav>
     <h2>Current Gold: <input type="text" disabled value="{{ request.session.gold }}"></h2>
     <div class="container">
+        {% for building in buildings %}
         <div class="content">
-            <h2>Temple</h2>
-            <h4>Get 10 - 20 Golds</h4>
+            <h2>{{ building.name }}</h2>
+            <h4>Get {{ building.min_gold }} - {{ building.max_gold }} Golds</h4>
             <form action="/getgold" method="post">
                 {% csrf_token %}
-                <input type="hidden" name="building" value="temple">
+                <input type="hidden" name="building_id" value="{{ building.id }}">
                 <button class="btn btn-ok">Get Gold</button>
             </form>
         </div>
-        <div class="content">
-            <h2>Castle</h2>
-            <h4>Get 5 - 10 Golds</h4>
-            <form action="/getgold" method="post">
-                {% csrf_token %}
-                <input type="hidden" name="building" value="castle">
-                <button class="btn btn-ok">Get Gold</button>
-            </form>
-        </div>
-        <div class="content">
-            <h2>Shogun</h2>
-            <h4>Get 20 - 30 Golds (with 10% chance of getting excecuted)</h4>
-            <form action="/getgold" method="post">
-                {% csrf_token %}
-                <input type="hidden" name="building" value="shogun">
-                <button class="btn btn-ok">Get Gold</button>
-            </form>
-        </div>
+        {% endfor %}
+        
     </div>
     <div class="scroller">
         {% for activity in request.session.activities reversed %}

@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, HttpResponse
 from datetime import datetime
-import random
+from .models import Building
 
 gold_map = {
     "temple": (10,20),
@@ -21,7 +21,11 @@ def index(request):
     if not SESSION_ACTIVITIES in request.session:
         request.session[SESSION_ACTIVITIES] = []
 
+    # Query for all buildings, pass as context object
+    all_buildings = Building.objects.all()
+
     context = {
+        "buildings": all_buildings,
         "newPlayer": "player" not in request.session # True if "player" in request.session False if not
     }
     return render(request, "home/index.html", context)
@@ -33,15 +37,19 @@ def player(request):
 
 def gold(request):
 
+    # query for building from request.POST["building_id"]
+    
     # TODO: increment gold based on building type
     
-    building = request.POST["building"]
-    gold_this_turn = random.randint(gold_map[building][0], gold_map[building][1])
+    building = Building.objects.get(id=request.POST["building_id"])
 
-    # check to see if we die
-    death_roll = random.randint(0,9)
-    if death_roll == 0 and building == "shogun":
-        return redirect("/death")
+
+    gold_this_turn = building.get_golds()
+
+    # # check to see if we die
+    # death_roll = random.randint(0,9)
+    # if death_roll == 0 and building == "shogun":
+    #     return redirect("/death")
 
     request.session["gold"] += gold_this_turn
 
@@ -50,7 +58,7 @@ def gold(request):
     formatted_now = now.strftime("%Y/%m/%d %I:%M%p")
 
     # TODO: format message string for activity list
-    message = f"You got {gold_this_turn} from {building} ({formatted_now})"
+    message = f"You got {gold_this_turn} from {building.name} ({formatted_now})"
 
     messages = request.session[SESSION_ACTIVITIES]
     messages.append(message)

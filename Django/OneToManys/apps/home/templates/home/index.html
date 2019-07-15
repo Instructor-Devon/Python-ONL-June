@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <title>Players and Teams</title>
+</head>
+<body>
+    <h2>Players</h2>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Team</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for player in players %}
+            <tr>
+                <td><a href="/players/{{ player.id }}">{{ player.first_name }}</a></td>
+                <td>{{ player.last_name }}</td>
+                <td>{{ player.team.team_name }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <h3>Add a Player</h3>
+    <form action="/players" method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="first_name">First Name</label>
+            <input type="text" id="first_name" name="first_name">
+        </div>
+        <div class="form-group">
+            <label for="last_name">Last Name</label>
+            <input type="text" id="last_name" name="last_name">
+        </div>
+        <div class="form-group">
+            <label for="team">Team</label>
+            <select id="team" name="team">
+            {% for team in teams %}
+                <option value="{{ team.id }}">{{ team.city}} {{ team.team_name}}</option>
+            {% endfor %} 
+            </select>
+        </div>
+        <button>Submit</button>
+    </form>
+    <h2>Teams</h2>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>City</th>
+                <th>Team Name</th>
+                <th>Number of Players</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for team in teams %}
+            <tr>
+                <td><a href="/teams/{{ team.id }}">{{ team.city }}</a></td>
+                <td>{{ team.team_name }}</td>
+                <td>{{ team.players.all | length }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

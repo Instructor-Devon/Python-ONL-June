@@ -1,0 +1,35 @@
+/* Coolors Exported Palette - coolors.co/141b41-306bac-fffd82-6f9ceb-1985a1 */
+/* RGB */
+h1 {
+  color: #d84727;
+}
+
+h2, h3, h4, h5, h6 {
+  color: #d38341;
+}
+
+p, blockquote, span, button, label {
+  color: #c7baaa;
+}
+
+body {
+  background-color: #003753;
+}
+
+hr {
+  border-top: solid 2px #d84727;
+}
+
+.content {
+  background-color: #4e5154;
+}
+
+.content blockquote {
+  color: #d7fab8;
+}
+
+.error {
+  color: #d7fab8;
+}
+
+/*# sourceMappingURL=palette.css.map */

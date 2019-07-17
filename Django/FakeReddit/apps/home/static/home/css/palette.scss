@@ -1,0 +1,36 @@
+/* Coolors Exported Palette - coolors.co/141b41-306bac-fffd82-6f9ceb-1985a1 */
+
+
+/* RGB */
+$color1: rgba(0, 55, 83, 1);
+$color2: rgb(211, 131, 65);
+$color3: rgb(199, 186, 170);
+$color4: #4e5154;;
+$color5: rgba(216, 71, 39, 1);
+$color6: rgb(30, 142, 248);
+$color7: #d7fab8;
+
+h1 {
+    color: $color5
+}
+h2, h3, h4, h5, h6 {
+    color: $color2
+}
+p, blockquote, span, button, label {
+    color: $color3
+}
+body {
+    background-color: $color1
+}
+hr {
+    border-top: solid 2px $color5;
+}
+.content {
+    background-color: $color4;
+}
+.content blockquote {
+    color: $color7;
+}
+.error {
+    color: $color7;
+}

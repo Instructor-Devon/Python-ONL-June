@@ -1,10 +1,9 @@
 from django.shortcuts import render, redirect, HttpResponse
-from .models import User, Post
+from .models import User, Post, Vote
 import re
 import bcrypt
 from django.contrib.messages import error
 
-EMAIL_REGEX = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$')
 
 def user_in_session(request):
     ''' returns User if someone is logged in.  None if not '''
@@ -23,29 +22,13 @@ def logout(request):
 
 def login(request):
     # VALIDATE form input
-    user_is_ok = True
+    user_is_ok = User.objects.authenticate(request.POST["email"], request.POST["password"])
 
-    # 1) email must be in database
-    # user_check => [{User}] OR []
-    user_check = User.objects.filter(email=request.POST["email"])
-
-    if user_check:
-        # {User}
-        user = user_check[0]
-        
-        # 2) if email is in db, password from form must match password in db
-        valid_password = bcrypt.checkpw(request.POST["password"].encode(), user.password.encode())
-        if not valid_password:
-            user_is_ok = False
-        else:
-            # USER IS GOOD TO GO!
-            # store id in session
-            request.session["user_id"] = user.id
-            # redirect to success
-            return redirect("/dashboard")
-    else:
-        user_is_ok = False
-            
+    if user_is_ok:
+        # get user's id with email
+        user = User.objects.get(email=request.POST['email'])
+        request.session["user_id"] = user.id
+        return redirect("/dashboard")
 
     if not user_is_ok:
         error(request, "Invalid Email/Password", extra_tags="login")
@@ -56,24 +39,7 @@ def register(request):
     # VALIDATE form input
     # valid email (regex)
 
-    errors = []
-
-    if not EMAIL_REGEX.match(request.POST["email"]):
-        errors.append("Invalid Email")
-    # non-empty inputs for first_name/last_name/email/password
-    if len(request.POST["first_name"]) < 1:
-        errors.append("First Name field is required")
-    if len(request.POST["last_name"]) < 1:
-        errors.append("Last Name field is required")
-    # password must be 6-10 characters
-    if len(request.POST["password"]) > 10 or len(request.POST["password"]) < 6 :
-        errors.append("Password must be 6-10 characters")
-    # password and confirm must match
-    if request.POST["password"] != request.POST["confirm"]:
-        errors.append("Passwords do not match!")
-    # ONE MORE!!! uniqueness of email
-    if len(User.objects.filter(email=request.POST["email"])) > 0:
-        errors.append("Email is in use")
+    errors = User.objects.validate(request.POST)
 
     # TODO: DETERMINE if the submission is entirely valid/invalid DONE
     if errors:
@@ -82,16 +48,8 @@ def register(request):
         return redirect("/")
     
     # IF NO ERRORS
-    # TODO: hash user's password
-    hashed = bcrypt.hashpw(request.POST['password'].encode(), bcrypt.gensalt())
-    # create our user! (.create returns User object!)
-    newUser = User.objects.create(
-        first_name = request.POST['first_name'],
-        last_name = request.POST['last_name'],
-        email = request.POST['email'],
-        password = hashed
-    )
-
+    # create our user! (.register returns User object!)
+    newUser = User.objects.register(request.POST)
 
     # TODO: store user_id in SESSION DONE
     request.session["user_id"] = newUser.id
@@ -104,20 +62,80 @@ def dashboard(request):
         return redirect("/")
     context = {
         "user": user,
-        "posts": Post.objects.all()
+        "posts": Post.objects.all().order_by('-updated_at')
     }
     return render(request, "home/dashboard.html", context)
 
 def create(request):
     user = user_in_session(request)
     # VALIDATE form inputs....
+    errors = Post.objects.validate(request.POST)
 
-    # make a post!
-    Post.objects.create(
-        topic = request.POST["topic"],
-        content = request.POST["content"],
-        author = user
-        # author_id = request.session["user_id"] (you can do this too)
+    if errors:
+        for e in errors:
+            error(request, e)
+    else:
+        # make a post!
+        Post.objects.create(
+            topic = request.POST["topic"],
+            content = request.POST["content"],
+            author = user
+            # author_id = request.session["user_id"] (you can do this too)
+        )
+
+    return redirect("/dashboard")
+
+def update(request):
+    user = user_in_session(request)
+    # VALIDATE form inputs....
+    errors = Post.objects.validate(request.POST)
+
+    if errors:
+        for e in errors:
+            error(request, e)
+    else:
+        # get the post!
+        to_update = Post.objects.get(id=request.POST["post_id"])
+        if to_update.author != user:
+            return redirect("/dashboard")
+        # update new fields on post
+        to_update.topic = request.POST['topic']
+        to_update.content = request.POST['content']
+        to_update.save()
+        return redirect("/dashboard")
+
+    # TODO: request.POST["post_id"] is vulnerable to HTML manipulation
+    return redirect(f"/post/edit/{request.POST['post_id']}")
+
+
+def delete(request, post_id):
+    # get the post
+    to_delete = Post.objects.get(id=post_id)
+    # make sure that to_delete.author_id == request.session["user_id"]
+    if to_delete.author_id == request.session["user_id"]:
+        # .delete() the thing
+        to_delete.delete()
+    return redirect("/dashboard")
+
+def edit(request, post_id):
+    # get the post
+    to_edit = Post.objects.get(id=post_id)
+    # send that post to a template in context:
+    context = {
+        "post": to_edit
+    }
+    # redirect all the hackers
+    if to_edit.author_id != request.session["user_id"]:
+        # .delete() the thing
+        return redirect("/dashboard")
+
+    return render(request, "home/edit.html", context)
+
+def vote(request, post_id, is_upvote):
+    print(post_id, int(is_upvote)==1)
+    Vote.objects.create(
+        post_id = post_id,
+        voter_id = request.session["user_id"],
+        is_upvote = int(is_upvote)==1,
     )
-
     return redirect("/dashboard")

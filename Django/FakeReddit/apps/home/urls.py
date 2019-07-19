@@ -8,4 +8,8 @@ urlpatterns = [
     url(r'^login$', views.login),
     url(r'^logout$', views.logout),
     url(r'^post/create$', views.create),
+    url(r'^post/update$', views.update),
+    url(r'^post/delete/(?P<post_id>\d+)$', views.delete),
+    url(r'^post/edit/(?P<post_id>\d+)$', views.edit),
+    url(r'^posts/vote/(?P<post_id>\d+)/(?P<is_upvote>[0-1]{1})$', views.vote)
 ]

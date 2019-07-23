@@ -1,0 +1,29 @@
+
+
+    What makes a good project?
+
+        - Something that furthers your interests/hobbies
+            - such as an app to help facilitate a pickup basketball game
+            - D&D app (utilizing a D&D API)
+
+        - Something that furthers your community
+            - Helping out shorthanded public services (somehow)
+            - Tech community (open source projects such as Django)
+
+        - Showcase your talents
+            - Make use of your Python/Flask/Django skills
+            - Make use of some external API (D&D, Google API Suite)
+            - Styling MATTERS (you want it to be pretty)
+
+
+
+    Ideas:
+
+        - D&D App (Jack)
+            - Utilizes D&D API
+
+        - Video Games (Justin)
+            - Library system for mangaging loaning out local copies of games (or other media)
+            - Video Game Rating and Reviews App
+            - Progress Tracker (per game?) ALA Steam/XBox Live
+            - Make a game!!! (simple text adventure, using python's input() function)

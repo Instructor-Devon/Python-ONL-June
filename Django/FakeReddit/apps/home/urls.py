@@ -6,6 +6,7 @@ urlpatterns = [
     url(r'^dashboard$', views.dashboard),
     url(r'^register$', views.register),
     url(r'^login$', views.login),
+    url(r'^ajax$', views.ajax),
     url(r'^logout$', views.logout),
     url(r'^post/create$', views.create),
     url(r'^post/update$', views.update),

@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, HttpResponse
-from .models import User, Post, Vote
+from .models import User, Post, Vote, Temp
 import re
 import bcrypt
 from django.contrib.messages import error
@@ -139,3 +139,11 @@ def vote(request, post_id, is_upvote):
         is_upvote = int(is_upvote)==1,
     )
     return redirect("/dashboard")
+
+def ajax(request):
+    if request.method == "POST":
+        Temp.objects.create(content=request.POST["content"])
+    context = {
+        "users": [ x.content for x in Temp.objects.all() ]
+    }
+    return render(request, 'home/partial.html', context)

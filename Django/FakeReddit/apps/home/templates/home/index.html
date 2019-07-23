@@ -8,15 +8,29 @@
         href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" 
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" 
         crossorigin="anonymous">
-    <link href="https://fonts.googleapis.com/css?family=Rubik&display=swap" rel="stylesheet"> 
+    <link href="https://fonts.googleapis.com/css?family=Rubik&display=swap" rel="stylesheet">
+    <script
+        src="https://code.jquery.com/jquery-3.4.1.js"
+        integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+        crossorigin="anonymous"></script>
     {% load static %}
     <link rel="stylesheet" href="{% static 'home/css/style.css'%}">
     <link rel="stylesheet" href="{% static 'home/css/palette.css'%}">
+    <script defer src="{% static 'home/js/ajax.js'%}"></script>
     <title>Fake Reddit</title>
 </head>
 <body>
     <div class="container">
         <h1>Fake Reddit</h1>
+        <form id="sender" action="/not/used" method="post">
+            <div class="form-group">
+                <label for="content">Content</label>
+                <input class="form-control" type="text" name="content" id="content">
+            </div>
+            <button class="btn btn-primary">Click Me</button>
+        </form>
+        <div id="stuff"></div>
+        <hr>
         <div class="flexy">
             <div class="content">
                 <h2>Sign Up Here!</h2>
